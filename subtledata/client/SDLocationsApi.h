@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 #import "NIKApiInvoker.h"
 #import "SDCategory.h"
+#import "SDTableDetails.h"
 #import "SDConnectStatus.h"
+#import "SDTableMinimal.h"
 #import "SDPaymentStatus.h"
 #import "SDUser.h"
 #import "SDItemToAdd.h"
@@ -14,7 +16,6 @@
 #import "SDExternalPaymentStatus.h"
 #import "SDNewPayment.h"
 #import "SDEmployee.h"
-#import "SDTable.h"
 #import "SDTicketStatus.h"
 #import "SDTicket.h"
 #import "SDNewConnection.h"
@@ -106,9 +107,11 @@
  
  @param location_id Subtledata Location ID
  @param api_key Subtledata API Key
+ @param use_cache Utilize Cached Data
  */
 -(void) getTableListWithCompletionBlock :(NSNumber*) location_id 
         api_key:(NSString*) api_key 
+        use_cache:(NSNumber*) use_cache 
         completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock;
 
 /**
@@ -148,7 +151,7 @@
 -(void) getTableWithCompletionBlock :(NSNumber*) location_id 
         table_id:(NSNumber*) table_id 
         api_key:(NSString*) api_key 
-        completionHandler: (void (^)(SDTable* output, NSError* error))completionBlock;
+        completionHandler: (void (^)(SDTableDetails* output, NSError* error))completionBlock;
 
 /**
 

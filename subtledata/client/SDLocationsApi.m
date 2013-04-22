@@ -1,7 +1,9 @@
 #import "SDLocationsApi.h"
 #import "NIKFile.h"
 #import "SDCategory.h"
+#import "SDTableDetails.h"
 #import "SDConnectStatus.h"
+#import "SDTableMinimal.h"
 #import "SDPaymentStatus.h"
 #import "SDUser.h"
 #import "SDItemToAdd.h"
@@ -14,7 +16,6 @@
 #import "SDExternalPaymentStatus.h"
 #import "SDNewPayment.h"
 #import "SDEmployee.h"
-#import "SDTable.h"
 #import "SDTicketStatus.h"
 #import "SDTicket.h"
 #import "SDNewConnection.h"
@@ -318,6 +319,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 
 -(void) getTableListWithCompletionBlock:(NSNumber*) location_id
         api_key:(NSString*) api_key
+        use_cache:(NSNumber*) use_cache
         completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock{
 
     NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/tables", basePath];
@@ -333,6 +335,8 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
         NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     if(api_key != nil)
         queryParams[@"api_key"] = api_key;
+    if(use_cache != nil)
+        queryParams[@"use_cache"] = use_cache;
     NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
     id bodyDictionary = nil;
         if(location_id == nil) {
@@ -355,7 +359,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
         if([data isKindOfClass:[NSArray class]]){
             NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[data count]];
             for (NSDictionary* dict in (NSArray*)data) {
-                SDTable* d = [[SDTable alloc]initWithValues: dict];
+                SDTableMinimal* d = [[SDTableMinimal alloc]initWithValues: dict];
                 [objs addObject:d];
             }
             completionBlock(objs, nil);
@@ -491,7 +495,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 -(void) getTableWithCompletionBlock:(NSNumber*) location_id
         table_id:(NSNumber*) table_id
         api_key:(NSString*) api_key
-        completionHandler: (void (^)(SDTable* output, NSError* error))completionBlock{
+        completionHandler: (void (^)(SDTableDetails* output, NSError* error))completionBlock{
 
     NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/tables/{table_id}", basePath];
 
@@ -529,7 +533,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
             completionBlock(nil, error);return;
         }
 
-        completionBlock( [[SDTable alloc]initWithValues: data], nil);}];
+        completionBlock( [[SDTableDetails alloc]initWithValues: data], nil);}];
     
 
 }
@@ -1472,6 +1476,7 @@ revenue_center_id:(NSNumber*) revenue_center_id
 
 -(void) getTableListAsJsonWithCompletionBlock :(NSNumber*) location_id 
 api_key:(NSString*) api_key 
+use_cache:(NSNumber*) use_cache 
 
         completionHandler:(void (^)(NSString*, NSError *))completionBlock{
 
@@ -1487,6 +1492,8 @@ api_key:(NSString*) api_key
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     if(api_key != nil)
         queryParams[@"api_key"] = api_key;
+    if(use_cache != nil)
+        queryParams[@"use_cache"] = use_cache;
     NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
     id bodyDictionary = nil;
     if(location_id == nil) {

@@ -1,7 +1,7 @@
 #import "NIKDate.h"
-#import "SDTable.h"
+#import "SDTableMinimal.h"
 
-@implementation SDTable
+@implementation SDTableMinimal
 
 -(id)pos_table_id: (NSNumber*) pos_table_id
     subtledata_id: (NSNumber*) subtledata_id

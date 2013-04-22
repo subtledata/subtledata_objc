@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "NIKSwaggerObject.h"
 
-@interface SDTable : NIKSwaggerObject
+@interface SDTableMinimal : NIKSwaggerObject
 
 @property(nonatomic) NSNumber* pos_table_id;
 @property(nonatomic) NSNumber* subtledata_id;
