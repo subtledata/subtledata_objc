@@ -3,18 +3,12 @@
 
 @interface SDConnectStatus : NIKSwaggerObject
 
-@property(nonatomic) NSNumber* user_id;
-@property(nonatomic) NSNumber* success;
-@property(nonatomic) NSString* card_id;
 @property(nonatomic) NSString* result;
+@property(nonatomic) NSNumber* success;
 @property(nonatomic) NSString* error;
-@property(nonatomic) NSNumber* device_id;
-- (id) user_id: (NSNumber*) user_id
+- (id) result: (NSString*) result
      success: (NSNumber*) success
-     card_id: (NSString*) card_id
-     result: (NSString*) result
-     error: (NSString*) error
-     device_id: (NSNumber*) device_id;
+     error: (NSString*) error;
 
 - (id) initWithValues: (NSDictionary*)dict;
 - (NSDictionary*) asDictionary;

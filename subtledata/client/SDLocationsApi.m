@@ -18,6 +18,7 @@
 #import "SDEmployee.h"
 #import "SDTicketStatus.h"
 #import "SDTicket.h"
+#import "SDTab.h"
 #import "SDNewConnection.h"
 
 
@@ -488,6 +489,55 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
         }
 
         completionBlock( [[SDTicketStatus alloc]initWithValues: data], nil);}];
+    
+
+}
+
+-(void) getTabsWithCompletionBlock:(NSNumber*) location_id
+        api_key:(NSString*) api_key
+        completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock{
+
+    NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/tabs", basePath];
+
+    // remove format in URL if needed
+    if ([requestUrl rangeOfString:@".{format}"].location != NSNotFound)
+        [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:@".{format}"] withString:@".json"];
+
+    [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:[NSString stringWithFormat:@"%@%@%@", @"{", @"location_id", @"}"]] withString: [_api escapeString:location_id]];
+    NSString* contentType = @"application/json";
+
+
+        NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    if(api_key != nil)
+        queryParams[@"api_key"] = api_key;
+    NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
+    id bodyDictionary = nil;
+        if(location_id == nil) {
+        // error
+    }
+    if(api_key == nil) {
+        // error
+    }
+    [_api dictionary: requestUrl 
+              method: @"GET" 
+         queryParams: queryParams 
+                body: bodyDictionary 
+        headerParams: headerParams
+         contentType: contentType
+     completionBlock: ^(NSDictionary *data, NSError *error) {
+        if (error) {
+            completionBlock(nil, error);return;
+        }
+        
+        if([data isKindOfClass:[NSArray class]]){
+            NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[data count]];
+            for (NSDictionary* dict in (NSArray*)data) {
+                SDTab* d = [[SDTab alloc]initWithValues: dict];
+                [objs addObject:d];
+            }
+            completionBlock(objs, nil);
+        }
+        }];
     
 
 }
@@ -1641,6 +1691,60 @@ body:(SDNewTicket*) body
     }
     [_api dictionary:requestUrl 
               method:@"POST" 
+         queryParams:queryParams 
+                body:bodyDictionary 
+        headerParams:headerParams
+         contentType:contentType
+     completionBlock:^(NSDictionary *data, NSError *error) {
+        if (error) {
+            completionBlock(nil, error);return;
+        }
+
+        NSData * responseData = nil;
+            if([data isKindOfClass:[NSDictionary class]]){
+                responseData = [NSJSONSerialization dataWithJSONObject:data
+                                                               options:kNilOptions error:&error];
+            }
+            else if ([data isKindOfClass:[NSArray class]]){
+                responseData = [NSJSONSerialization dataWithJSONObject:data
+                                                               options:kNilOptions error:&error];
+            }
+            NSString * json = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            completionBlock(json, nil);
+        
+
+    }];
+
+
+}
+
+-(void) getTabsAsJsonWithCompletionBlock :(NSNumber*) location_id 
+api_key:(NSString*) api_key 
+
+        completionHandler:(void (^)(NSString*, NSError *))completionBlock{
+
+    NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/tabs", basePath];
+
+    // remove format in URL if needed
+    if ([requestUrl rangeOfString:@".{format}"].location != NSNotFound)
+        [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:@".{format}"] withString:@""];
+
+    [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:[NSString stringWithFormat:@"%@%@%@", @"{", @"location_id", @"}"]] withString: [_api escapeString:location_id]];
+    NSString* contentType = @"application/json";
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    if(api_key != nil)
+        queryParams[@"api_key"] = api_key;
+    NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
+    id bodyDictionary = nil;
+    if(location_id == nil) {
+        // error
+    }
+    if(api_key == nil) {
+        // error
+    }
+    [_api dictionary:requestUrl 
+              method:@"GET" 
          queryParams:queryParams 
                 body:bodyDictionary 
         headerParams:headerParams

@@ -18,6 +18,7 @@
 #import "SDEmployee.h"
 #import "SDTicketStatus.h"
 #import "SDTicket.h"
+#import "SDTab.h"
 #import "SDNewConnection.h"
 
 
@@ -139,6 +140,17 @@
         ticket_type:(NSString*) ticket_type 
         body:(SDNewTicket*) body 
         completionHandler: (void (^)(SDTicketStatus* output, NSError* error))completionBlock;
+
+/**
+
+ Get a list of tabs by location ID
+ 
+ @param location_id Subtledata Location ID
+ @param api_key Subtledata API Key
+ */
+-(void) getTabsWithCompletionBlock :(NSNumber*) location_id 
+        api_key:(NSString*) api_key 
+        completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock;
 
 /**
 
