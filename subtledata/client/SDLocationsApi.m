@@ -20,6 +20,7 @@
 #import "SDTicket.h"
 #import "SDTab.h"
 #import "SDNewConnection.h"
+#import "SDMenuItem.h"
 
 
 
@@ -260,6 +261,55 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 
 }
 
+-(void) getMenuItemWithCompletionBlock:(NSNumber*) location_id
+        item_id:(NSNumber*) item_id
+        api_key:(NSString*) api_key
+        use_cache:(NSNumber*) use_cache
+        completionHandler: (void (^)(SDMenuItem* output, NSError* error))completionBlock{
+
+    NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/menu/items/{item_id}", basePath];
+
+    // remove format in URL if needed
+    if ([requestUrl rangeOfString:@".{format}"].location != NSNotFound)
+        [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:@".{format}"] withString:@".json"];
+
+    [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:[NSString stringWithFormat:@"%@%@%@", @"{", @"location_id", @"}"]] withString: [_api escapeString:location_id]];
+    [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:[NSString stringWithFormat:@"%@%@%@", @"{", @"item_id", @"}"]] withString: [_api escapeString:item_id]];
+    NSString* contentType = @"application/json";
+
+
+        NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    if(api_key != nil)
+        queryParams[@"api_key"] = api_key;
+    if(use_cache != nil)
+        queryParams[@"use_cache"] = use_cache;
+    NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
+    id bodyDictionary = nil;
+        if(location_id == nil) {
+        // error
+    }
+    if(item_id == nil) {
+        // error
+    }
+    if(api_key == nil) {
+        // error
+    }
+    [_api dictionary:requestUrl 
+              method:@"GET" 
+         queryParams:queryParams 
+                body:bodyDictionary 
+        headerParams:headerParams
+         contentType:contentType
+     completionBlock:^(NSDictionary *data, NSError *error) {
+        if (error) {
+            completionBlock(nil, error);return;
+        }
+
+        completionBlock( [[SDMenuItem alloc]initWithValues: data], nil);}];
+    
+
+}
+
 -(void) getLocationEmployeesWithCompletionBlock:(NSNumber*) location_id
         api_key:(NSString*) api_key
         manager_id:(NSNumber*) manager_id
@@ -372,6 +422,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 
 -(void) getTicketsWithCompletionBlock:(NSNumber*) location_id
         api_key:(NSString*) api_key
+        condensed:(NSNumber*) condensed
         completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock{
 
     NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/tickets", basePath];
@@ -387,6 +438,8 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
         NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     if(api_key != nil)
         queryParams[@"api_key"] = api_key;
+    if(condensed != nil)
+        queryParams[@"condensed"] = condensed;
     NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
     id bodyDictionary = nil;
         if(location_id == nil) {
@@ -1461,6 +1514,68 @@ use_cache:(NSNumber*) use_cache
 
 }
 
+-(void) getMenuItemAsJsonWithCompletionBlock :(NSNumber*) location_id 
+item_id:(NSNumber*) item_id 
+api_key:(NSString*) api_key 
+use_cache:(NSNumber*) use_cache 
+
+        completionHandler:(void (^)(NSString*, NSError *))completionBlock{
+
+    NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/locations/{location_id}/menu/items/{item_id}", basePath];
+
+    // remove format in URL if needed
+    if ([requestUrl rangeOfString:@".{format}"].location != NSNotFound)
+        [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:@".{format}"] withString:@""];
+
+    [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:[NSString stringWithFormat:@"%@%@%@", @"{", @"location_id", @"}"]] withString: [_api escapeString:location_id]];
+    [requestUrl replaceCharactersInRange: [requestUrl rangeOfString:[NSString stringWithFormat:@"%@%@%@", @"{", @"item_id", @"}"]] withString: [_api escapeString:item_id]];
+    NSString* contentType = @"application/json";
+
+    NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
+    if(api_key != nil)
+        queryParams[@"api_key"] = api_key;
+    if(use_cache != nil)
+        queryParams[@"use_cache"] = use_cache;
+    NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
+    id bodyDictionary = nil;
+    if(location_id == nil) {
+        // error
+    }
+    if(item_id == nil) {
+        // error
+    }
+    if(api_key == nil) {
+        // error
+    }
+    [_api dictionary:requestUrl 
+              method:@"GET" 
+         queryParams:queryParams 
+                body:bodyDictionary 
+        headerParams:headerParams
+         contentType:contentType
+     completionBlock:^(NSDictionary *data, NSError *error) {
+        if (error) {
+            completionBlock(nil, error);return;
+        }
+
+        NSData * responseData = nil;
+            if([data isKindOfClass:[NSDictionary class]]){
+                responseData = [NSJSONSerialization dataWithJSONObject:data
+                                                               options:kNilOptions error:&error];
+            }
+            else if ([data isKindOfClass:[NSArray class]]){
+                responseData = [NSJSONSerialization dataWithJSONObject:data
+                                                               options:kNilOptions error:&error];
+            }
+            NSString * json = [[NSString alloc]initWithData:responseData encoding:NSUTF8StringEncoding];
+            completionBlock(json, nil);
+        
+
+    }];
+
+
+}
+
 -(void) getLocationEmployeesAsJsonWithCompletionBlock :(NSNumber*) location_id 
 api_key:(NSString*) api_key 
 manager_id:(NSNumber*) manager_id 
@@ -1583,6 +1698,7 @@ use_cache:(NSNumber*) use_cache
 
 -(void) getTicketsAsJsonWithCompletionBlock :(NSNumber*) location_id 
 api_key:(NSString*) api_key 
+condensed:(NSNumber*) condensed 
 
         completionHandler:(void (^)(NSString*, NSError *))completionBlock{
 
@@ -1598,6 +1714,8 @@ api_key:(NSString*) api_key
     NSMutableDictionary* queryParams = [[NSMutableDictionary alloc] init];
     if(api_key != nil)
         queryParams[@"api_key"] = api_key;
+    if(condensed != nil)
+        queryParams[@"condensed"] = condensed;
     NSMutableDictionary* headerParams = [[NSMutableDictionary alloc] init];
     id bodyDictionary = nil;
     if(location_id == nil) {

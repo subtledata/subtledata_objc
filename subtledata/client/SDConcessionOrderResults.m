@@ -1,13 +1,15 @@
 #import "NIKDate.h"
-#import "SDTicketStatus.h"
+#import "SDConcessionOrderResults.h"
 
-@implementation SDTicketStatus
+@implementation SDConcessionOrderResults
 
--(id)error: (NSString*) error
+-(id)payment_success: (NSNumber*) payment_success
+    error: (NSString*) error
     ticket_id: (NSNumber*) ticket_id
     success: (NSNumber*) success
     result: (NSString*) result
 {
+  _payment_success = payment_success;
   _error = error;
   _ticket_id = ticket_id;
   _success = success;
@@ -19,6 +21,7 @@
 {
     self = [super init];
     if(self) {
+        _payment_success = dict[@"payment_success"]; 
         _error = dict[@"error"]; 
         _ticket_id = dict[@"ticket_id"]; 
         _success = dict[@"success"]; 
@@ -31,6 +34,7 @@
 
 -(NSDictionary*) asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
+    if(_payment_success != nil) dict[@"payment_success"] = _payment_success ;
     if(_error != nil) dict[@"error"] = _error ;
     if(_ticket_id != nil) dict[@"ticket_id"] = _ticket_id ;
     if(_success != nil) dict[@"success"] = _success ;

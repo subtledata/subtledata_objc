@@ -1,13 +1,15 @@
 #import <Foundation/Foundation.h>
 #import "NIKSwaggerObject.h"
 
-@interface SDTicketStatus : NIKSwaggerObject
+@interface SDConcessionOrderResults : NIKSwaggerObject
 
+@property(nonatomic) NSNumber* payment_success;
 @property(nonatomic) NSString* error;
 @property(nonatomic) NSNumber* ticket_id;
 @property(nonatomic) NSNumber* success;
 @property(nonatomic) NSString* result;
-- (id) error: (NSString*) error
+- (id) payment_success: (NSNumber*) payment_success
+     error: (NSString*) error
      ticket_id: (NSNumber*) ticket_id
      success: (NSNumber*) success
      result: (NSString*) result;

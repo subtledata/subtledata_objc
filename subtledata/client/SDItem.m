@@ -3,19 +3,15 @@
 
 @implementation SDItem
 
--(id)description: (NSString*) description
-    price: (NSNumber*) price
-    name: (NSString*) name
-    revenue_center_id: (NSNumber*) revenue_center_id
-    item_id: (NSNumber*) item_id
-    item_images: (NSArray*) item_images
+-(id)item_id: (NSNumber*) item_id
+    instructions: (NSString*) instructions
+    modifiers: (NSArray*) modifiers
+    quantity: (NSNumber*) quantity
 {
-  _description = description;
-  _price = price;
-  _name = name;
-  _revenue_center_id = revenue_center_id;
   _item_id = item_id;
-  _item_images = item_images;
+  _instructions = instructions;
+  _modifiers = modifiers;
+  _quantity = quantity;
   return self;
 }
 
@@ -23,31 +19,29 @@
 {
     self = [super init];
     if(self) {
-        _description = dict[@"description"]; 
-        _price = dict[@"price"]; 
-        _name = dict[@"name"]; 
-        _revenue_center_id = dict[@"revenue_center_id"]; 
         _item_id = dict[@"item_id"]; 
-        id item_images_dict = dict[@"item_images"];
-        if([item_images_dict isKindOfClass:[NSArray class]]) {
+        _instructions = dict[@"instructions"]; 
+        id modifiers_dict = dict[@"modifiers"];
+        if([modifiers_dict isKindOfClass:[NSArray class]]) {
 
-            NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[(NSArray*)item_images_dict count]];
+            NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[(NSArray*)modifiers_dict count]];
 
-            if([(NSArray*)item_images_dict count] > 0) {
-                for (NSDictionary* dict in (NSArray*)item_images_dict) {
-                    SDItemImage* d = [[SDItemImage alloc] initWithValues:dict];
+            if([(NSArray*)modifiers_dict count] > 0) {
+                for (NSDictionary* dict in (NSArray*)modifiers_dict) {
+                    SDModifier* d = [[SDModifier alloc] initWithValues:dict];
                     [objs addObject:d];
                 }
                 
-                _item_images = [[NSArray alloc] initWithArray:objs];
+                _modifiers = [[NSArray alloc] initWithArray:objs];
             }
             else {
-                _item_images = [[NSArray alloc] init];
+                _modifiers = [[NSArray alloc] init];
             }
         }
         else {
-            _item_images = [[NSArray alloc] init];
+            _modifiers = [[NSArray alloc] init];
         }
+        _quantity = dict[@"quantity"]; 
         
 
     }
@@ -56,29 +50,27 @@
 
 -(NSDictionary*) asDictionary {
     NSMutableDictionary* dict = [[NSMutableDictionary alloc] init];
-    if(_description != nil) dict[@"description"] = _description ;
-    if(_price != nil) dict[@"price"] = _price ;
-    if(_name != nil) dict[@"name"] = _name ;
-    if(_revenue_center_id != nil) dict[@"revenue_center_id"] = _revenue_center_id ;
     if(_item_id != nil) dict[@"item_id"] = _item_id ;
-    if(_item_images != nil){
-        if([_item_images isKindOfClass:[NSArray class]]){
+    if(_instructions != nil) dict[@"instructions"] = _instructions ;
+    if(_modifiers != nil){
+        if([_modifiers isKindOfClass:[NSArray class]]){
             NSMutableArray * array = [[NSMutableArray alloc] init];
-            for( SDItemImage *item_images in (NSArray*)_item_images) {
-                [array addObject:[(NIKSwaggerObject*)item_images asDictionary]];
+            for( SDModifier *modifiers in (NSArray*)_modifiers) {
+                [array addObject:[(NIKSwaggerObject*)modifiers asDictionary]];
             }
-            dict[@"item_images"] = array;
+            dict[@"modifiers"] = array;
         }
-        else if(_item_images && [_item_images isKindOfClass:[NIKDate class]]) {
-            NSString * dateString = [(NIKDate*)_item_images toString];
+        else if(_modifiers && [_modifiers isKindOfClass:[NIKDate class]]) {
+            NSString * dateString = [(NIKDate*)_modifiers toString];
             if(dateString){
-                dict[@"item_images"] = dateString;
+                dict[@"modifiers"] = dateString;
             }
         }
     }
     else {
-    if(_item_images != nil) dict[@"item_images"] = [(NIKSwaggerObject*)_item_images asDictionary];
+    if(_modifiers != nil) dict[@"modifiers"] = [(NIKSwaggerObject*)_modifiers asDictionary];
     }
+    if(_quantity != nil) dict[@"quantity"] = _quantity ;
     NSDictionary* output = [dict copy];
     return output;
 }

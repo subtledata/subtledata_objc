@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "NIKSwaggerObject.h"
-#import "SDItem.h"
+#import "SDMenuItemDetail.h"
 #import "SDCategoryImage.h"
 
 @interface SDCategory : NIKSwaggerObject

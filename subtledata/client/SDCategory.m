@@ -32,7 +32,7 @@
 
             if([(NSArray*)items_dict count] > 0) {
                 for (NSDictionary* dict in (NSArray*)items_dict) {
-                    SDItem* d = [[SDItem alloc] initWithValues:dict];
+                    SDMenuItemDetail* d = [[SDMenuItemDetail alloc] initWithValues:dict];
                     [objs addObject:d];
                 }
                 
@@ -81,7 +81,7 @@
     if(_items != nil){
         if([_items isKindOfClass:[NSArray class]]){
             NSMutableArray * array = [[NSMutableArray alloc] init];
-            for( SDItem *items in (NSArray*)_items) {
+            for( SDMenuItemDetail *items in (NSArray*)_items) {
                 [array addObject:[(NIKSwaggerObject*)items asDictionary]];
             }
             dict[@"items"] = array;

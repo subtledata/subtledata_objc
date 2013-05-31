@@ -20,6 +20,7 @@
 #import "SDTicket.h"
 #import "SDTab.h"
 #import "SDNewConnection.h"
+#import "SDMenuItem.h"
 
 
 @interface SDLocationsApi: NSObject {
@@ -89,6 +90,21 @@
 
 /**
 
+ Get details about a menu item
+ 
+ @param location_id Subtledata Location ID
+ @param item_id Subtledata Location ID
+ @param api_key Subtledata API Key
+ @param use_cache Utilize Cached Data
+ */
+-(void) getMenuItemWithCompletionBlock :(NSNumber*) location_id 
+        item_id:(NSNumber*) item_id 
+        api_key:(NSString*) api_key 
+        use_cache:(NSNumber*) use_cache 
+        completionHandler: (void (^)(SDMenuItem* output, NSError* error))completionBlock;
+
+/**
+
  Get a list of employees by location ID
  
  @param location_id Subtledata Location ID
@@ -121,9 +137,11 @@
  
  @param location_id Subtledata Location ID
  @param api_key Subtledata API Key
+ @param condensed Remove ticket details
  */
 -(void) getTicketsWithCompletionBlock :(NSNumber*) location_id 
         api_key:(NSString*) api_key 
+        condensed:(NSNumber*) condensed 
         completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock;
 
 /**

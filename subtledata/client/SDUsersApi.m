@@ -8,6 +8,7 @@
 #import "SDNewCard.h"
 #import "SDNewUser.h"
 #import "SDDeleteUserStatus.h"
+#import "SDNewUserDetails.h"
 #import "SDAuthUserRequest.h"
 
 
@@ -42,8 +43,8 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 }
 
 -(void) createUserWithCompletionBlock:(NSString*) api_key
-        body:(SDNewUser*) body
-        completionHandler: (void (^)(SDUser* output, NSError* error))completionBlock{
+        body:(SDNewUserDetails*) body
+        completionHandler: (void (^)(SDNewUser* output, NSError* error))completionBlock{
 
     NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/users", basePath];
 
@@ -102,7 +103,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
             completionBlock(nil, error);return;
         }
 
-        completionBlock( [[SDUser alloc]initWithValues: data], nil);}];
+        completionBlock( [[SDNewUser alloc]initWithValues: data], nil);}];
     
 
 }
@@ -261,7 +262,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 -(void) searchUsersByNameWithCompletionBlock:(NSString*) user_name
         api_key:(NSString*) api_key
         use_cache:(NSNumber*) use_cache
-        completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock{
+        completionHandler: (void (^)(SDUser* output, NSError* error))completionBlock{
 
     NSMutableString* requestUrl = [NSMutableString stringWithFormat:@"%@/users/search/name/{user_name}", basePath];
 
@@ -286,26 +287,18 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
     if(api_key == nil) {
         // error
     }
-    [_api dictionary: requestUrl 
-              method: @"GET" 
-         queryParams: queryParams 
-                body: bodyDictionary 
-        headerParams: headerParams
-         contentType: contentType
-     completionBlock: ^(NSDictionary *data, NSError *error) {
+    [_api dictionary:requestUrl 
+              method:@"GET" 
+         queryParams:queryParams 
+                body:bodyDictionary 
+        headerParams:headerParams
+         contentType:contentType
+     completionBlock:^(NSDictionary *data, NSError *error) {
         if (error) {
             completionBlock(nil, error);return;
         }
-        
-        if([data isKindOfClass:[NSArray class]]){
-            NSMutableArray * objs = [[NSMutableArray alloc] initWithCapacity:[data count]];
-            for (NSDictionary* dict in (NSArray*)data) {
-                SDUser* d = [[SDUser alloc]initWithValues: dict];
-                [objs addObject:d];
-            }
-            completionBlock(objs, nil);
-        }
-        }];
+
+        completionBlock( [[SDUser alloc]initWithValues: data], nil);}];
     
 
 }
@@ -477,7 +470,7 @@ static NSString * basePath = @"https://api.subtledata.com/v1";
 }
 
 -(void) createUserAsJsonWithCompletionBlock :(NSString*) api_key 
-body:(SDNewUser*) body 
+body:(SDNewUserDetails*) body 
 
         completionHandler:(void (^)(NSString*, NSError *))completionBlock{
 

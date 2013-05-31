@@ -8,6 +8,7 @@
 #import "SDNewCard.h"
 #import "SDNewUser.h"
 #import "SDDeleteUserStatus.h"
+#import "SDNewUserDetails.h"
 #import "SDAuthUserRequest.h"
 
 
@@ -30,8 +31,8 @@
  @param body New User Object
  */
 -(void) createUserWithCompletionBlock :(NSString*) api_key 
-        body:(SDNewUser*) body 
-        completionHandler: (void (^)(SDUser* output, NSError* error))completionBlock;
+        body:(SDNewUserDetails*) body 
+        completionHandler: (void (^)(SDNewUser* output, NSError* error))completionBlock;
 
 /**
 
@@ -79,7 +80,7 @@
 -(void) searchUsersByNameWithCompletionBlock :(NSString*) user_name 
         api_key:(NSString*) api_key 
         use_cache:(NSNumber*) use_cache 
-        completionHandler: (void (^)(NSArray* output, NSError* error))completionBlock;
+        completionHandler: (void (^)(SDUser* output, NSError* error))completionBlock;
 
 /**
 
